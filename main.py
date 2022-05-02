@@ -12,7 +12,7 @@ def webscraper():
     print(soup)
 
 
-def split():
+def create_passages():
     files = [f for f in listdir("files")]
     counter = 0
     for f in files:
@@ -31,19 +31,24 @@ def split():
             else:
                 npassage = passage + " " + word
                 passage = npassage
-                
-                
+
+
 def write_article(articles, wd):
-    name = wd[49:53] + "_" + wd[54:56] + "_" + wd[57:59] + "_"
+    name = wd[13:17] + "_"
     for i, text in enumerate(articles):
-        ftext = open("passages/" + name + str(i) + ".txt", "w")
+        ftext = open("passages\\newspaper\\" + name + str(i) + ".txt", "w", encoding="utf8")
         ftext.write(text)
         ftext.close()
+        print("writing..")
+    print("finished writing")
+
+
 
 def main():
     # webscraper()
-    #split()
-    wd = "/home/twan/Documents/Thesis/kranten_pd_voorbeeld/1618/06/14/DDD_ddd_010500649_mpeg21"
+    # split()
+    # Change the working directory accordingly to the files you want to convert
+    wd = "E:\\Downloads\\1820"
     articles = retrieve_xml(wd)
     write_article(articles, wd)
 
