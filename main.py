@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from os import listdir
+from retrieve_xml import retrieve_xml
 
 
 def webscraper():
@@ -30,11 +31,21 @@ def split():
             else:
                 npassage = passage + " " + word
                 passage = npassage
-
+                
+                
+def write_article(articles, wd):
+    name = wd[49:53] + "_" + wd[54:56] + "_" + wd[57:59] + "_"
+    for i, text in enumerate(articles):
+        ftext = open("passages/" + name + str(i) + ".txt", "w")
+        ftext.write(text)
+        ftext.close()
 
 def main():
     # webscraper()
-    split()
+    #split()
+    wd = "/home/twan/Documents/Thesis/kranten_pd_voorbeeld/1618/06/14/DDD_ddd_010500649_mpeg21"
+    articles = retrieve_xml(wd)
+    write_article(articles, wd)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ from xml.etree import ElementTree as ET
 
 
 def retrieve_xml(wd):
+    article_list = []
     liist = os.listdir(wd)
     for item in liist:
         ending = item[-15:]
@@ -12,20 +13,14 @@ def retrieve_xml(wd):
                 document = ET.parse(doc)
                 root =  document.getroot()
                 text = root.find("p").text
-                convert_text(text)
-                
-def convert_text(text):
-    print(text)
-    print("\n")
+                article_list.append(text)
+    return article_list
+
     
-    
-    
-    
-    
-    
-def main():
-    working_directory = "/home/twan/Documents/Thesis/kranten_pd_voorbeeld/1618/06/14/DDD_ddd_010500649_mpeg21"
-    retrieve_xml(working_directory)
+# def main():
+#    working_directory = "/home/twan/Documents/Thesis/kranten_pd_voorbeeld/1618/06/14/DDD_ddd_010500649_mpeg21"
+#    articles = retrieve_xml(working_directory)
+#    return articles
     
     
     
