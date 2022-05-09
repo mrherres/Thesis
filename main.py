@@ -1,10 +1,20 @@
 import spacy
+import csv
 from spacy.lang.nl.examples import sentences
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from os import listdir
 from retrieve_xml import retrieve_xml
+
+
+def collect_genres():
+    file = open("files/meta_data.csv", encoding="ISO8859-1")
+    csvreader = csv.reader(file)
+    rows = []
+    for row in csvreader:
+        rows.append(row)
+    print(rows)
 
 
 def webscraper(url):
@@ -54,16 +64,29 @@ def text_tokenizer():
                 print(i.text, i.lemma)
 
 
+def format_file(path):
+    with open(path, "r") as file:
+        s = ""
+        for i in file:
+            s += i.rstrip() + " "
+    with open(path, "w") as newfile:
+        newfile.write(s)
+
+
+
 
 
 
 def main():
     print("!")
+    path = "passages\\biology\\1786_0.txt"
+    format_file(path)
+    # collect_genres()
     # webscraper(url)
     # split()
     # --------------------------------------------------------------------------
     # Change the working directory accordingly to the files you want to convert
-    # wd = "E:\\Downloads\\1820"
+    # wd = "E:\\Downloads\\1870"
     # articles = retrieve_xml(wd)
     # write_article(articles, wd)
     # --------------------------------------------------------------------------
