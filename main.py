@@ -118,9 +118,48 @@ def generate_passages():
                " E:\\PycharmProjects\\Thesis\\annotations\\taalkunde\\" + file)
 
 
+def divide_passages():
+    # This function will divide the passages in the annotation's folder, and will divide them across the annotators.
+    # Each passage will be annotated by three individual annotators.
+    # Please set the genre accordingly.
+    genre = "letterkunde"
+    files = [f for f in listdir("annotations/" + genre)]
+    annotator = 0
+    for i in files:
+        if i[-3:] == "txt":
+            for x in range(3):
+                if annotator == 0:
+                    print("Sterre")
+                    system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Sterre\\" + genre + "\\" + i)
+                    annotator += 1
+                elif annotator == 1:
+                    print("Julius")
+                    system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Julius\\" + genre + "\\" + i)
+                    annotator += 1
+                elif annotator == 2:
+                    print("Max")
+                    system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Max\\" + genre + "\\" + i)
+                    annotator += 1
+                elif annotator == 3:
+                    print("Karlo")
+                    system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Karlo\\" + genre + "\\" + i)
+                    annotator += 1
+                elif annotator == 4:
+                    print("Twan")
+                    system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Twan\\" + genre + "\\" + i)
+                    annotator = 0
+            print("Moved to  3 annotators! Moving on to next passage")
+
+
 def main():
     print("!")
-    generate_passages()
+    # generate_passages()
+    divide_passages()
     # --------------------------------------------------------------------------
     # path = "passages\\biology\\1786_0.txt"
     # format_file(path)
