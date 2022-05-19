@@ -2,8 +2,9 @@ import os
 from xml.etree import ElementTree as Et
 
 
-
 def retrieve_xml(wd):
+    # This function will collect the texts from xml files from the Delpher dataset
+    # It writes the texts to a list, which is then passed on to main.py
     article_list = []
     a = 0
     liist = os.listdir(wd)
@@ -26,7 +27,35 @@ def retrieve_xml(wd):
     return article_list
 
 
-# def main():
+def dbnl_xml():
+    # This is a test function to collect xml from the DBNL dataset
+    # I have not got this working yet, though
+    # ------------------------------------------------------------
+    # with open("passages/drama/1654_vond001luci01_01.xml") as f:
+    #     lines = f.readlines()
+    #     text = ""
+    #     for i in lines:
+    #         text = i
+    #         text = text.replace("&nbsp", "placeholder")
+    #         with open("passages/test/a.xml", "a") as b:
+    #             b.writelines(text)
+    with open("passages/test/a.xml", encoding="utf-8") as a:
+        document = Et.parse(a)
+        print(document)
+        root = document.getroot()
+        print(root.tag)
+        text = root.findall("./text/body/*/*/*")
+        for i in text:
+            if i.text is not None:
+                print(i.text)
+
+
+def main():
+    dbnl_xml()
 #    working_directory = "/home/twan/Documents/Thesis/kranten_pd_voorbeeld/1618/06/14/DDD_ddd_010500649_mpeg21"
 #    articles = retrieve_xml(working_directory)
 #    return articles
+
+
+if __name__ == "__main__":
+    main()
