@@ -42,8 +42,9 @@ def webscraper(url):
 
 def create_passages():
     # This was a test function to divide txt files in to passages with a length of 100 words
-    # I won't be using this for the thesis however
-    files = [f for f in listdir("files")]
+    # However, this function was not used as it was easier to do it by hand,
+    # because some files are smaller than 100 words.
+    files = [f for f in listdir("annotations/newspaper")]
     counter = 0
     for f in files:
         passage = ""
@@ -122,7 +123,8 @@ def divide_passages():
     # This function will divide the passages in the annotation's folder, and will divide them across the annotators.
     # Each passage will be annotated by three individual annotators.
     # Please set the genre accordingly.
-    genre = "letterkunde"
+    genre = "newspaper"
+    genre_abbr = genre[:3]
     files = [f for f in listdir("annotations/" + genre)]
     annotator = 0
     for i in files:
@@ -131,39 +133,61 @@ def divide_passages():
                 if annotator == 0:
                     print("Sterre")
                     system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
-                           " C:\\Users\\twant\\Desktop\\Annotations\\Sterre\\" + genre + "\\" + i)
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Sterre\\" + genre_abbr + "_" + i)
                     annotator += 1
                 elif annotator == 1:
                     print("Julius")
                     system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
-                           " C:\\Users\\twant\\Desktop\\Annotations\\Julius\\" + genre + "\\" + i)
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Julius\\" + genre_abbr + "_" + i)
                     annotator += 1
                 elif annotator == 2:
                     print("Max")
                     system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
-                           " C:\\Users\\twant\\Desktop\\Annotations\\Max\\" + genre + "\\" + i)
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Max\\" + genre_abbr + "_" + i)
                     annotator += 1
                 elif annotator == 3:
                     print("Karlo")
                     system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
-                           " C:\\Users\\twant\\Desktop\\Annotations\\Karlo\\" + genre + "\\" + i)
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Karlo\\" + genre_abbr + "_" + i)
                     annotator += 1
                 elif annotator == 4:
                     print("Twan")
                     system("copy E:\\PycharmProjects\\Thesis\\annotations\\" + genre + "\\" + i +
-                           " C:\\Users\\twant\\Desktop\\Annotations\\Twan\\" + genre + "\\" + i)
+                           " C:\\Users\\twant\\Desktop\\Annotations\\Twan\\" + genre_abbr + "_" + i)
                     annotator = 0
             print("Moved to  3 annotators! Moving on to next passage")
 
 
+def prepare_annotations():
+    # This function will make all passages into one big string and add a header with seperations (the +)
+    # so that spreadsheets can automatically load all the texts.
+    # Make sure to adjust the path and file names according to the annotators.
+    path = "C:\\Users\\twant\\Desktop\\Annotations\\Twan"
+    files = [f for f in listdir(path)]
+    somme_string = "Text+ Agency+ Event Sequencing+ World Making \n"
+    for x in files:
+        with open(path + "\\" + x, encoding="utf8") as let:
+            for text in let:
+                for char in text:
+                    if char != "\n" and char != "\t":
+                        somme_string += char
+                somme_string += "+ + + \n"
+    with open("annotations/twan.txt", "w", encoding="utf8") as newfile:
+        newfile.write(somme_string)
+
+
 def main():
     print("!")
+    # These are all function that have to do with generating and preparing the annotations
     # generate_passages()
-    divide_passages()
+    # divide_passages()
+    # create_passages()
+    # prepare_annotations()
+    # collect_genres()
     # --------------------------------------------------------------------------
+    # These are all test functions and can be ignored
     # path = "passages\\biology\\1786_0.txt"
     # format_file(path)
-    # collect_genres()
     # webscraper(url)
     # split()
     # --------------------------------------------------------------------------
@@ -172,13 +196,14 @@ def main():
     # articles = retrieve_xml(wd)
     # write_article(articles, wd)
     # --------------------------------------------------------------------------
-    # Code for lemmatization etc.
+    # Code for lemmatization etc. Is a wip
     # text_tokenizer()
     # --------------------------------------------------------------------------
-    # Code for retrieving text from dbnl files
+    # Code for retrieving text from DBNL files
     # path = "passages/drama/1654_vond001luci01_01.xml"
     # dbnl_xml(path)
     # --------------------------------------------------------------------------
+    # Test function, can be ignored
     # fairy_tales()
 
 
