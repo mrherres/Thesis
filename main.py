@@ -1,6 +1,7 @@
 import spacy
 import csv
 import random
+import pickle
 from spacy.lang.nl.examples import sentences
 
 from bs4 import BeautifulSoup
@@ -78,7 +79,7 @@ def write_article(articles, wd):
 
 def text_tokenizer():
     # Test function to try out the Spacy model
-    with open("E:\\PycharmProjects\\Thesis\\passages\\newspaper\\1770_11.txt") as text:
+    with open("E:\\PycharmProjects\\Thesis\\passages\\drama\\1800__par003paro01_01.txt") as text:
         nlp = spacy.load("nl_core_news_sm")
         for word in text:
             doc = nlp(word)
@@ -96,7 +97,7 @@ def format_file(path):
 
 
 def fairy_tales():
-    # This function can be ignored, since I won't be using it or my thesis
+    # This function can be ignored, since I won't be using it in my thesis
     a = 0
     with open("passages/test/pg22555.txt", "r") as f:
         for i in f.readlines():
@@ -176,8 +177,72 @@ def prepare_annotations():
         newfile.write(somme_string)
 
 
+def gather_scores():
+    # This function will create a pickle with all the scores of the annotations in them
+    path = "C:\\Users\\twant\\Desktop\\Annotations\\Twan"
+    files = [f for f in listdir(path)]
+    with open("scores//Twan - twan.csv", "r", encoding="utf8") as f:
+        csvreader = csv.reader(f)
+        header = next(csvreader)
+        rows = []
+        for row in csvreader:
+            rows.append(row)
+    # print(files)
+    with open("scores/score_dict", "rb") as y:
+        score_dict = pickle.loads(y.read())
+    # print(score_dict_old)
+    for i, row in enumerate(rows):
+        agency = row[1]
+        event_sequencing = row[2]
+        world_making = row[3]
+        if agency == "":
+            agency = 1
+            event_sequencing = 1
+            world_making = 1
+        # print(f"{agency} and {event_sequencing} and {world_making}, with {i+1}")
+        file = files[i]
+        file_name = file[:-4]
+        if file_name not in score_dict:
+            score_dict[file_name] = [agency, event_sequencing, world_making]
+        else:
+            score_dict[file_name] += [agency, event_sequencing, world_making]
+        # score_dict[file_name] = [agency, event_sequencing, world_making]
+    print(len(score_dict))
+
+    with open("scores/score_dict", "wb") as x:
+        pickle.dump(score_dict, x)
+
+
+def average_scores():
+    with open("scores/score_dict", "rb") as y:
+        score_dict = pickle.loads(y.read())
+    for key in score_dict.keys():
+        scores = score_dict[key]
+        if len(scores) > 6:
+            agency = int(scores[0]) + int(scores[3]) + int(scores[6])
+            event_sequencing = int(scores[1]) + int(scores[4]) + int(scores[7])
+            world_making = int(scores[2]) + int(scores[5]) + int(scores[8])
+            new_values = [agency // 3, event_sequencing // 3, world_making // 3]
+            score_dict[key] = new_values
+        else:
+            agency = int(scores[0]) + int(scores[3])
+            event_sequencing = int(scores[1]) + int(scores[4])
+            world_making = int(scores[2]) + int(scores[5])
+            new_values = [agency // 2, event_sequencing // 2, world_making // 2]
+            score_dict[key] = new_values
+
+    with open("scores/score_dict", "wb") as x:
+        pickle.dump(score_dict, x)
+
+
 def main():
     print("!")
+    # gather_scores()
+    # average_scores()
+    # with open("scores/score_dict", "rb") as y:
+    #     score_dict = pickle.loads(y.read())
+    # print(score_dict)
+    # -------------------------------------------------------------------------
     # These are all function that have to do with generating and preparing the annotations
     # generate_passages()
     # divide_passages()
@@ -197,11 +262,11 @@ def main():
     # write_article(articles, wd)
     # --------------------------------------------------------------------------
     # Code for lemmatization etc. Is a wip
-    # text_tokenizer()
+    text_tokenizer()
     # --------------------------------------------------------------------------
     # Code for retrieving text from DBNL files
     # path = "passages/drama/1654_vond001luci01_01.xml"
-    # dbnl_xml(path)
+    # dbnl_xml()
     # --------------------------------------------------------------------------
     # Test function, can be ignored
     # fairy_tales()

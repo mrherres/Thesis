@@ -1,5 +1,8 @@
 import os
 from xml.etree import ElementTree as Et
+from lxml import html
+import re
+from os import listdir
 
 
 def retrieve_xml(wd):
@@ -30,24 +33,19 @@ def retrieve_xml(wd):
 def dbnl_xml():
     # This is a test function to collect xml from the DBNL dataset
     # I have not got this working yet, though
-    # ------------------------------------------------------------
-    # with open("passages/drama/1654_vond001luci01_01.xml") as f:
-    #     lines = f.readlines()
-    #     text = ""
-    #     for i in lines:
-    #         text = i
-    #         text = text.replace("&nbsp", "placeholder")
-    #         with open("passages/test/a.xml", "a") as b:
-    #             b.writelines(text)
-    with open("passages/test/a.xml", encoding="utf-8") as a:
-        document = Et.parse(a)
-        print(document)
-        root = document.getroot()
-        print(root.tag)
-        text = root.findall("./text/body/*/*/*")
-        for i in text:
-            if i.text is not None:
-                print(i.text)
+    path = "passages/taalkunde"
+    files = [f for f in listdir(path)]
+    for i in range(len(files)):
+        print(i)
+        with open("passages/taalkunde/" + files[i], encoding="utf-8") as a:
+            text = ""
+            tree = html.parse(a)
+            paragraphs = tree.xpath('//p')
+            for paragraph in paragraphs:
+                text += "\n" + paragraph.text_content()
+            filename = files[i][:-4]
+            with open("passages/taalkunde/" + filename + ".txt", "w", encoding="utf8") as b:
+                b.writelines(text)
 
 
 def main():
