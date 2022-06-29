@@ -32,27 +32,26 @@ def retrieve_xml(wd):
 
 def dbnl_xml():
     # This is a test function to collect xml from the DBNL dataset
-    # I have not got this working yet, though
-    path = "passages/taalkunde"
+    # Sterre gave me the tip to use lxml instead of xml ElementTree, since that worked better
+    # Change the path names accordingly
+    path = "passages/jeugdliteratuur"
     files = [f for f in listdir(path)]
     for i in range(len(files)):
         print(i)
-        with open("passages/taalkunde/" + files[i], encoding="utf-8") as a:
+        with open("passages/jeugdliteratuur/" + files[i], encoding="utf-8") as a:
             text = ""
             tree = html.parse(a)
+            # set this xpath to //div for jeugdliteratuur, //p for the rest
             paragraphs = tree.xpath('//p')
             for paragraph in paragraphs:
                 text += "\n" + paragraph.text_content()
             filename = files[i][:-4]
-            with open("passages/taalkunde/" + filename + ".txt", "w", encoding="utf8") as b:
+            with open("passages/jeugdliteratuur/" + filename + ".txt", "w", encoding="utf8") as b:
                 b.writelines(text)
 
 
 def main():
     dbnl_xml()
-#    working_directory = "/home/twan/Documents/Thesis/kranten_pd_voorbeeld/1618/06/14/DDD_ddd_010500649_mpeg21"
-#    articles = retrieve_xml(working_directory)
-#    return articles
 
 
 if __name__ == "__main__":
